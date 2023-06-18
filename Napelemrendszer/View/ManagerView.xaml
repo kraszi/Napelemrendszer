@@ -1,0 +1,268 @@
+﻿<Window x:Class="Napelemrendszer.View.ManagerView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Napelemrendszer.View"
+        xmlns:model="clr-namespace:Napelemrendszer.Model"
+        mc:Ignorable="d"
+        Title="ManagerView" 
+        Height="{x:Static model:Constants.WindowHeight}" 
+        Width="{x:Static model:Constants.WindowWidth}"
+        WindowStartupLocation="CenterScreen">
+
+    <!--MAIN GRID START-->
+    <Grid>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="40"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+
+
+        <!--MAIN MENU START-->
+        <Grid Background="Gold" 
+              Grid.ColumnSpan="2">
+
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+
+            <TextBlock
+                Text="Raktárvezető"
+                Grid.Column="0" Grid.ColumnSpan="3"
+                VerticalAlignment="Center" HorizontalAlignment="Center"
+                FontSize="17" FontWeight="Bold"
+                />
+
+            <Button
+                Content="Kijelentkezés"
+                x:Name="logout" Click="Logout_Click"
+                Grid.Row="0" Grid.Column="12" Grid.ColumnSpan="2"
+                Height="30" Width="100"
+                />
+
+        </Grid>
+        <!--MAIN MENU END-->
+
+
+
+
+
+
+
+
+
+
+        <!--LEFT SIDE WINDOW START-->
+        <StackPanel Grid.Row="1" Grid.Column="0" Margin="10">
+
+            <TextBlock Text="B.1 - Új alkatrészek felvétele a rendszerbe (név, ár, rekeszenként a maximálisan elhelyezhető darabszám)"
+                       HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="13" Margin="0,0,0,5" FontWeight="Bold"/>
+
+
+
+            <StackPanel Orientation="Horizontal" Margin="0 0 0 5">
+                <TextBlock Text="Sor:" Width="100" Height="20"/>
+                <TextBox x:Name="sor_textbox" Width="200" Height="20" />
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal" Margin="0 0 0 5">
+                <TextBlock Text="Oszlop:" Width="100" Height="20"/>
+                <TextBox x:Name="oszlop_textbox" Width="200" Height="20"/>
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal" Margin="0 0 0 5">
+                <TextBlock Text="Szint:" Width="100" Height="20"/>
+                <TextBox x:Name="szint_textbox" Width="200" Height="20"/>
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal" Margin="0 0 0 5">
+                <TextBlock Text="Név:" Width="100" Height="20"/>
+                <TextBox x:Name="nev_textbox" Width="200" Height="20"/>
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal" Margin="0 0 0 5">
+                <TextBlock Text="Max darabszám:" Width="100" Height="20"/>
+                <TextBox x:Name="maxdarab_textbox" Width="200" Height="20"/>
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal" Margin="0 0 0 5">
+                <TextBlock Text="Ár:" Width="100" Height="20"/>
+                <TextBox x:Name="ar_textbox" Width="200" Height="20"/>
+            </StackPanel>
+
+            <Button x:Name="ujfelvetel_button" Width="100" Grid.Column="1" Content="Felvétel" Click="ujFelvetel_onClick" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="100,5,0,0"/>
+
+
+            <TextBlock Text="B.2 - Árak módosítása"
+                       HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="14" Margin="0,20,0,5" FontWeight="Bold"/>
+
+
+            <StackPanel Orientation="Horizontal" Margin="0 0 0 5">
+                <TextBlock Text="Alkatrész kiválasztása:" Width="130" Height="20"/>
+                <ComboBox x:Name="ar_combobox" Width="300" Height="20"/>
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal" Margin="0 0 0 5">
+                <TextBlock Text="Új ár:" Width="130" Height="20"/>
+                <TextBox x:Name="ujar_textbox" TextWrapping="Wrap" Width="300" Height="20"/>
+            </StackPanel>
+
+            <Button x:Name="modosit_button" Width="100" Height="20" Content="Módosít" Click="arModositas_onClick" Margin="130,5,0,0" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+
+
+
+            <TextBlock Text="B.3 - Hiányzó alkatrészek listázása (lefoglalások figyelembevétele mellett, a rendelések támogatására)"
+                       HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="13" Margin="0,20,0,5" FontWeight="Bold"/>
+
+            <Button Content="Hiányzók" Click="hianyzok_onClick" HorizontalAlignment="Left" VerticalAlignment="Center" Width="120" Height="20" Margin="0,5,0,0"/>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="530"/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <ListView Grid.Column="0" x:Name="hianyzokListView" ItemsSource="{Binding}" Width="530" Height="250">
+                    <ListView.Resources>
+                        <Style TargetType="{x:Type GridViewColumnHeader}">
+                            <Setter Property="HorizontalContentAlignment" Value="Left"/>
+                        </Style>
+                    </ListView.Resources>
+                    <ListView.View>
+                        <GridView>
+                            <GridViewColumn Header="ID" DisplayMemberBinding="{Binding ID}" Width="50" />
+                            <GridViewColumn Header="Név" DisplayMemberBinding="{Binding ProductName}" Width="280"/>
+                            <GridViewColumn Header="Limit" DisplayMemberBinding="{Binding MaxQuantity}" Width="80"/>
+                            <GridViewColumn Header="Hiányzó mennyiség" DisplayMemberBinding="{Binding Reserved}" Width="120"/>
+
+                        </GridView>
+                    </ListView.View>
+                </ListView>
+                <ListView Grid.Column="1" x:Name="szuksegesListView" ItemsSource="{Binding}">
+                    <ListView.Resources>
+                        <Style TargetType="{x:Type GridViewColumnHeader}">
+                            <Setter Property="HorizontalContentAlignment" Value="Left"/>
+                        </Style>
+                    </ListView.Resources>
+                    <ListView.View>
+                        <GridView>
+                            <GridViewColumn Header="Szükséges mennyiség" DisplayMemberBinding="{Binding}"/>
+                        </GridView>
+                    </ListView.View>
+                </ListView>
+            </Grid>
+
+
+
+
+        </StackPanel>
+        <!--LEFT SIDE WINDOW END-->
+
+
+
+
+
+
+
+
+
+
+
+
+        <!--RIGHT SIDE WINDOW START-->
+        <StackPanel Grid.Row="1" Grid.Column="1" Margin="10">
+
+
+            <TextBlock Text="B.4 - Hiányzó, de már előre lefoglalt alkatrészek listázása"
+                       HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="14" Margin="0,0,0,5" FontWeight="Bold"/>
+
+            <Button Content="Lefoglalt hiányzók" x:Name="lefoglaltHianyzok_button" Click="lefoglaltHianyzok_onClick" HorizontalAlignment="Left" VerticalAlignment="Center" Width="130" Height="20" Margin="0,5,0,0"/>
+            <ListView x:Name="lefoglaltHianyzokListView" ItemsSource="{Binding}" Height="250">
+                <ListView.Resources>
+                    <Style TargetType="{x:Type GridViewColumnHeader}">
+                        <Setter Property="HorizontalContentAlignment" Value="Left"/>
+                    </Style>
+                </ListView.Resources>
+                <ListView.View>
+                    <GridView>
+                        <GridViewColumn Header="ID" DisplayMemberBinding="{Binding ID}" Width="50" />
+                        <GridViewColumn Header="Név" DisplayMemberBinding="{Binding ProductName}" Width="300"/>
+                        <GridViewColumn Header="Hiányzó mennyiség" DisplayMemberBinding="{Binding Reserved}" Width="200"/>
+                    </GridView>
+                </ListView.View>
+            </ListView>
+            
+
+
+            <TextBlock Text="B.5 - Beérkező anyagok felvétele a rendszerbe"
+                       HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="14" Margin="0,20,0,5" FontWeight="Bold"/>
+
+
+            <StackPanel Orientation="Horizontal" Margin="0 0 0 5">
+                <TextBlock Text="Név:" Width="100" Height="20"/>
+                <ComboBox x:Name="beerkezo_nev_combobox" Width="400" Height="20"/>
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal" Margin="0 0 0 5">
+                <TextBlock Text="Darabszám:" Width="100" Height="20"/>
+                <TextBox x:Name="beerkezo_darab_textbox" Width="400" Height="20"/>
+            </StackPanel>
+
+            <Button x:Name="beerkezofelvetel_button" Content="Felvétel" Click="beerkezoFelvetel_onClick" Width="80" Height="20" Margin="100,0,20,0" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+
+
+            <TextBlock Text="B.6 - Rekeszeknél a maximálisan elhelyezhető darabszám kezelése"
+                       HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="14" Margin="0,20,0,5" FontWeight="Bold"/>
+
+
+            <StackPanel Orientation="Horizontal" Margin="0 0 0 5">
+                <TextBlock Text="Alkatrész kiválasztása:" Width="130" Height="20"/>
+                <ComboBox x:Name="limit_combobox" Width="400" Height="20"/>
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal" Margin="0 0 0 5">
+                <TextBlock Text="Új limit:" Width="130" Height="20"/>
+                <TextBox x:Name="ujlimit_textbox" TextWrapping="Wrap" Width="400" Height="20"/>
+            </StackPanel>
+            
+            <Button x:Name="limit_modosit_button" Width="100" Grid.Row="3" Grid.Column="1" Content="Módosít" Click="limitModositas_onClick" Margin="130,0,0,0" Height="20" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+
+
+
+        </StackPanel>
+        <!--RIGHT SIDE WINDOW END-->
+
+
+
+
+
+
+
+
+
+
+
+    </Grid>
+    <!--MAIN GRID END-->
+
+
+</Window>
